@@ -91,3 +91,4 @@ print(f"Redukt decyzyjny dla Fig. 2: {reduct2}")
 rules2 = get_rules(decision_system2, reduct2)
 print("Reguły wygenerowane z otrzymanego reduktu decyzyjnego dla Fig. 2:")
 for rule in rules2:
+    print rule
