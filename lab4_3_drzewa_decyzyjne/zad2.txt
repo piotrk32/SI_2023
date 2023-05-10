@@ -1,0 +1,89 @@
+
+Obiekt	a1	a2	a3	dec
+o1		1	0	0	0
+o2		1	0	1	0
+o3		0	1	0	0
+o4		1	1	1	1
+o5		1	1	0	1
+
+
+
+
+
+
+
+
+Aby użyć algorytmu Decision-Tree-Learning, musimy obliczyć wartości entropii dla atrybutów a1, a2, a3. Entropia obliczana jest na podstawie wartości decyzyjnych. Wzór na entropię to:
+
+Entropia(S) = -p(0) * log2(p(0)) - p(1) * log2(p(1))
+
+Gdzie p(x) oznacza prawdopodobieństwo wystąpienia wartości decyzyjnej x w zbiorze S.
+-------------------------------------------------------------------------------------------
+1. Pierwszy krok: Oblicz entropię dla zbioru S:
+
+Entropia(S) = -3/5 * log2(3/5) - 2/5 * log2(2/5) ≈ 0.971
+
+2. Drugi krok: Oblicz entropię dla atrybutów a1, a2, a3 oraz ich przyrost informacji (Gain):
+
+Entropia(a1=0) = -1/1 * log2(1/1) = 0
+Entropia(a1=1) = -2/4 * log2(2/4) - 2/4 * log2(2/4) = 1
+
+Gain(a1) = Entropia(S) - (1/5 * Entropia(a1=0) + 4/5 * Entropia(a1=1)) ≈ 0.971 - 0.8 = 0.171
+
+Entropia(a2=0) = -2/3 * log2(2/3) - 1/3 * log2(1/3) ≈ 0.918
+Entropia(a2=1) = -1/2 * log2(1/2) - 1/2 * log2(1/2) = 1
+
+Gain(a2) = Entropia(S) - (3/5 * Entropia(a2=0) + 2/5 * Entropia(a2=1)) ≈ 0.971 - 0.950 = 0.021
+
+Entropia(a3=0) = -2/3 * log2(2/3) - 1/3 * log2(1/3) ≈ 0.918
+Entropia(a3=1) = -1/2 * log2(1/2) - 1/2 * log2(1/2) = 1
+
+Gain(a3) = Entropia(S) - (3/5 * Entropia(a3=0) + 2/5 * Entropia(a3=1)) ≈ 0.971 - 0.950 = 0.021
+
+
+Wybieramy atrybut o największym przyroście informacji (Gain) jako atrybut do podziału. W tym przypadku wybieramy atrybut a1, ponieważ ma największy Gain:
+
+Gain(a1) = 0.171
+Gain(a2) = 0.021
+Gain(a3) = 0.021
+
+Podział według atrybutu a1:
+
+a1=0: {o3}
+a1=1: {o1, o2, o4, o5}
+Węzeł dla a1=0 ma tylko jeden obiekt, więc nie ma potrzeby dalszego dzielenia. Węzeł dla a1=1 zawiera obiekty o różnych wartościach decyzyjnych, więc musimy kontynuować podział.
+
+Teraz musimy obliczyć entropię i Gain dla a2 i a3, biorąc pod uwagę tylko obiekty z a1=1.
+
+Entropia(S') = -2/4 * log2(2/4) - 2/4 * log2(2/4) = 1
+
+Entropia(a2=0) = -2/2 * log2(2/2) = 0
+Entropia(a2=1) = -1/2 * log2(1/2) - 1/2 * log2(1/2) = 1
+
+Gain(a2) = Entropia(S') - (2/4 * Entropia(a2=0) + 2/4 * Entropia(a2=1)) = 1 - 0.5 = 0.5
+
+Entropia(a3=0) = -1/2 * log2(1/2) - 1/2 * log2(1/2) = 1
+Entropia(a3=1) = -1/2 * log2(1/2) - 1/2 * log2(1/2) = 1
+
+Gain(a3) = Entropia(S') - (2/4 * Entropia(a3=0) + 2/4 * Entropia(a3=1)) = 1 - 1 = 0
+
+Teraz wybieramy atrybut o największym Gain do podziału. Wybieramy a2, ponieważ Gain(a2) > Gain(a3).
+
+Podział według atrybutu a2:
+
+a2=0: {o1, o2}
+a2=1: {o4, o5}
+Obie grupy mają jednolite wartości decyzyjne, więc nie ma potrzeby dalszego podziału.
+
+Ostateczne drzewo decyzyjne wygląda następująco:
+
+a1
+├─ 0: 0
+└─ 1: a2
+     ├─ 0: 0
+     └─ 1: 1
+Oznacza to, że drzewo decyzyjne może być opisane jako:
+
+Jeśli a1 = 0, to dec = 0
+Jeśli a1 = 1 i a2 = 0, to dec = 0
+Jeśli a1 = 1 i a2 = 1, to dec = 1
